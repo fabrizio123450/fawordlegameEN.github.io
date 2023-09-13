@@ -3,21 +3,13 @@
  */
 let palabraW = '';
 const url = 'https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase';
-const response = fetch(url);
-const data = response;
-console.log(data);
-fetch(url).then(response => {
-    if (!response.ok) {
-        throw new Error('Error al obtener los datos');
-    }
-    return response.json();
-}).then(data => {
-    palabraW += data[0];
-    console.log(data[0]);
-}).catch(error => {
-    console.error(error);
-});
-console.log(palabraW);
+
+fetch(url).then(response => response.json())
+.then(response => {
+    console.log("asd",response);
+    palabraW = response[0].toUpperCase();
+})
+.catch(err => console.error(err));
 
 
 const mybutton = document.getElementById('reset');
@@ -28,6 +20,7 @@ const indiceAleatorio = palabras[Math.floor(Math.random() * palabras.length)];
 let intentos = 6;
 let palabraD = indiceAleatorio.split('');
 console.log(indiceAleatorio);
+
 campos.forEach((campo, index) => {
     campo.addEventListener('input', (event) => {
         const valor = event.target.value;
@@ -72,7 +65,7 @@ function wordlePPY() {
 
     let myInput = '';
     campos.forEach((campo) => {
-        myInput += campo.value.toLowerCase();
+        myInput += campo.value.toUpperCase();
     });
    
     
@@ -86,12 +79,12 @@ function wordlePPY() {
     for (let i in palabraW) {
         const SPAN = document.createElement('span');
         SPAN.className = 'letter';
-
-        if (palabraD[i] === myInput[i]) {
+        console.log("primera palabra "+ palabraW[i],"segunda "+ myInput[i]);
+        if (palabraW[i] === myInput[i]) {
             SPAN.innerHTML = myInput[i];
             SPAN.style.backgroundColor = 'green';
 
-        } else if (palabraD.includes(myInput[i])) {
+        } else if (palabraW.includes(myInput[i])) {
             SPAN.innerHTML = myInput[i];
             SPAN.style.backgroundColor = 'yellow';
 
@@ -107,8 +100,8 @@ function wordlePPY() {
     htmPalabra.innerHTML = "tienes " + intentos + " intentos";
 
 
-    if (myInput.includes(indiceAleatorio) || intentos === 0) {
-        const mensaje = myInput.includes(indiceAleatorio) ? "GANASTE 😀" : "PERDISTE 😖";
+    if (myInput.includes(palabraW) || intentos === 0) {
+        const mensaje = myInput.includes(palabraW) ? "GANASTE 😀" : "PERDISTE 😖";
         htmPalabra.innerHTML = mensaje;
     
         campos.forEach((campo) => {
