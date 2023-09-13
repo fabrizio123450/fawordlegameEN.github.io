@@ -9,6 +9,7 @@
 
 <body>
   <button id="openModalBtn">?</button>
+  <button id="idioma" onclick="changeL()">ES</button>
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -36,29 +37,3 @@
 </body>
 
 </html>
-<script>
- /* console.log ("asd",fetch("https://random-word-api.herokuapp.com/word?length=5&&lang=es").then(response => {
-    if (!response.ok) {
-        throw new Error('Error al obtener los datos');
-    }
-    return response.json();
-}).then(data => {
-    
-    console.log(data[0]);
-}).catch(error => {
-    console.error(error);
-}));*/
-
-  /* REMOVER ACENTO DE LA PALABRA
-  function removerAcentos(palabra) {
-  return palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  }
-
-  const palabraConAcento = "café";
-  const palabraSinAcento = removerAcentos(palabraConAcento);
-
-  console.log("Palabra con acento:", palabraConAcento);
-  console.log("Palabra sin acento:", palabraSinAcento);
-
-  */
-</script>

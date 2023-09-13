@@ -1,25 +1,28 @@
 /**
  * Variables
  */
+/**
+ * Por defecto esta en ingles
+ * Al cambiar a español aunque la palabra te muestra con acento
+ * este fue removido en el codigo
+ */
 let palabraW = '';
 const url = 'https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase';
+const urlTwo = "https://random-word-api.herokuapp.com/word?length=5&&lang=es";
 
 fetch(url).then(response => response.json())
-.then(response => {
-    console.log("asd",response);
-    palabraW = response[0].toUpperCase();
-})
-.catch(err => console.error(err));
+    .then(response => {
+        console.log("asd", response);
+        palabraW = response[0].toUpperCase();
+    })
+    .catch(err => console.error(err));
 
-
+const boton = document.getElementById("idioma");
 const mybutton = document.getElementById('reset');
-const palabras = ["actor", "altar", "arbol", "ropas", "manis"];
 const htmPalabra = document.getElementById('palabra');
-const campos = document.querySelectorAll('.campo')
-const indiceAleatorio = palabras[Math.floor(Math.random() * palabras.length)];
+const campos = document.querySelectorAll('.campo');
 let intentos = 6;
-let palabraD = indiceAleatorio.split('');
-console.log(indiceAleatorio);
+
 
 campos.forEach((campo, index) => {
     campo.addEventListener('input', (event) => {
@@ -55,10 +58,10 @@ campos.forEach((campo, index) => {
  * @returns si la palabra es pequeña no hace nada
  */
 function wordlePPY() {
-    console.log(palabraW[0]);
-   // palabraW = palabraW.split('');
-    console.log("asd",palabraW);
-    
+    //en el momento que presione ENTER desaparece el boton de idioma
+    boton.style.display = "none";
+
+    console.log("la palabra es "+palabraW);
     const GRID = document.getElementById("grid");
     const ROW = document.createElement('div');
     ROW.className = 'row';
@@ -67,19 +70,19 @@ function wordlePPY() {
     campos.forEach((campo) => {
         myInput += campo.value.toUpperCase();
     });
-   
     
     if(myInput.length < 5){
         htmPalabra.innerHTML = "PALABRA CORTA";
         return;
-    }
-    if(myInput.includes(palabraW)){
-        alert("ASDASDASD");
+    ///NOTA: este if lo deje asi porque en un principio tenia que escojer primero el idioma
+    //aun asi sirve en caso de que el api por defecto no traiga la palabra asi cambia al otro
+    }else if (palabraW === ''){
+        htmPalabra.innerHTML = "ESCOJA UN IDIOMA PRIMERO";
+        return;
     }
     for (let i in palabraW) {
         const SPAN = document.createElement('span');
         SPAN.className = 'letter';
-        console.log("primera palabra "+ palabraW[i],"segunda "+ myInput[i]);
         if (palabraW[i] === myInput[i]) {
             SPAN.innerHTML = myInput[i];
             SPAN.style.backgroundColor = 'green';
@@ -117,6 +120,31 @@ function wordlePPY() {
 function reloadF(){
     window.location.href = window.location.href;
 }
+//busca en la api la palabra
+function fetchPalabra(url) {
+    fetch(url)
+        .then(response => response.json())
+        .then(response => {
+            console.log("asd", response);
+            //palabra en mayuscula y remueve el acento de la palabra
+            palabraW = response[0].toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        })
+        .catch(err => console.error(err));
+}
+/**
+ * Cambia el idioma del juego por español o ingles
+ * El idioma por defecto del juego es el ingles
+ */
+function changeL(){
+    if (boton.textContent.trim() === "ES") {
+        boton.textContent = "EN";
+        fetchPalabra(urlTwo);
+    } else if (boton.textContent.trim() === "EN") {
+        boton.textContent = "ES";
+        fetchPalabra(url); // Llama a la función con la URL original
+    }
+}
+
 
 // Abrir el modal cuando se hace clic en el botón
 const openModalBtn = document.getElementById('openModalBtn');
